@@ -1,10 +1,7 @@
 import InterviewLive from "@/components/InterviewLive";
-import Loading from "@/components/Loading";
-
-import Image from "next/image";
 import React from "react";
 
-const page = async ({  }: {}) => {
+const page = async () => {
 
 
 

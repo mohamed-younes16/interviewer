@@ -31,7 +31,9 @@ const InterviewLive = ({
   const [connecting, setConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>(false);
   const [isSpeaking, setIsspeaking] = useState(false);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<
+    { transcript: string; role: "assistant" | "user" }[]
+  >([]);
   const { userData } = useStore();
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const InterviewLive = ({
       setMessages((prev) => [...prev, message]);
     });
   }, []);
-
+  const lastMessage = messages[messages.length - 1].transcript;
   const startInterview = async () => {
     setConnecting(true);
     if (type === "generate") {
@@ -182,6 +184,7 @@ const InterviewLive = ({
             </Button>
           )}
         </div>
+        <div>{lastMessage}</div>
       </div>
     </div>
   );

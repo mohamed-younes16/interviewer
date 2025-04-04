@@ -1,18 +1,16 @@
-import admin from 'firebase-admin';
-
-console.log("GOOGLE_APPLICATION_CREDENTIALS:", process.env.GOOGLE_APPLICATION_CREDENTIALS);
+import admin from "firebase-admin";
 
 if (!admin.apps.length) {
   try {
+    const serviceAccount = JSON.parse(
+      process.env.FIREBASE_SERVICE_ACCOUNT_KEY!
+    );
+
     admin.initializeApp({
-      credential: admin.credential.applicationDefault(),
+      credential: admin.credential.cert(serviceAccount),
     });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Firebase Admin initialization error:', error.stack);
-    } else {
-      console.error('An unknown error occurred during Firebase Admin initialization.');
-    }
+  } catch (error: any) {
+    console.error("Firebase Admin initialization error:", error.stack);
   }
 }
 

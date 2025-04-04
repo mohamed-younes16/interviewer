@@ -59,6 +59,7 @@ const InterviewLive = ({
     vapi.on("error", () => {
       setConnecting(false);
       setConnected(false);
+      toast.dismiss();
       toast.error("erroe happend with vapi ");
     });
 

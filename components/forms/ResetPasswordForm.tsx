@@ -9,7 +9,6 @@ import {
   sendPasswordResetEmail,
   verifyPasswordResetCode,
   confirmPasswordReset,
-  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
@@ -58,8 +57,7 @@ const ResetPasswordForm = () => {
       setIsValidCode(false);
       form.reset();
     }
-  }, [isValidCode, checkingcode, oobCode]);
-
+  }, [isValidCode, checkingcode, oobCode, form]);
 
   useEffect(() => {
     const code = searchParams.get("oobCode");
@@ -75,10 +73,10 @@ const ResetPasswordForm = () => {
       await verifyPasswordResetCode(auth, code);
       setIsValidCode(true);
       toast.success("Reset code verified. You can now reset your password.");
-    } catch (error: any) {
+    } catch {
       toast.error("Invalid or expired password reset link.");
       setIsValidCode(false);
-      console.error("Error verifying password reset code:", error);
+      console.error("Error verifying password reset code:");
     } finally {
       setCheckingCode(false);
     }
@@ -92,9 +90,9 @@ const ResetPasswordForm = () => {
         dynamicLinkDomain: "http://localhost:3000/reset",
       });
       toast.success("Password reset email sent!");
-    } catch (error: any) {
-      toast.error("Error sending reset email: " + error.message);
-      console.error("Error sending reset email:", error);
+    } catch {
+      toast.error("Error sending reset email: ");
+      console.error("Error sending reset email:");
     }
   };
 
@@ -108,9 +106,9 @@ const ResetPasswordForm = () => {
       await confirmPasswordReset(auth, oobCode, data.newPassword);
       toast.success("Password reset successfully!");
       router.push("/sign-in");
-    } catch (error: any) {
-      toast.error("Error resetting password: " + error.message);
-      console.error("Error confirming password reset:", error);
+    } catch {
+      toast.error("Error resetting password ");
+      console.error("Error confirming password reset");
     }
   };
 

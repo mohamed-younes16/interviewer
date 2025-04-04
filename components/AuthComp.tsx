@@ -41,7 +41,7 @@ const AuthComp = () => {
           <p className="font-bold text-2xl">Practice job interviews with AI</p>
         </div>
         <>
-          <AuthForm type={authType} setAuthType={setAuthType} />
+          <AuthForm type={authType} />
         </>
 
         <div className="fc mt-4  font-medium gap-2">

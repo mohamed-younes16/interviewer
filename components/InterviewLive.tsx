@@ -39,7 +39,7 @@ const InterviewLive = ({ data }: { data: Interview }) => {
       setIsspeaking(false);
     });
 
-    vapi.on("error", (e) => {
+    vapi.on("error", () => {
       setConnecting(false);
       setConnected(false);
       toast.error("erroe happend with vapi ");
@@ -61,7 +61,7 @@ const InterviewLive = ({ data }: { data: Interview }) => {
           // You can store the JSON in state or send it to Firestore.
         }
       } catch (error) {
-        console.log("Not a JSON message:", message);
+        console.log("Not a JSON message:", error);
       }
     });
   }, []);
@@ -114,12 +114,13 @@ const InterviewLive = ({ data }: { data: Interview }) => {
                 alt="your profile image"
               />
             </div>
-            {Array.from({ length: 2 }).map((e, i) => {
+            {Array.from({ length: 2 }).map((_, i) => {
               const cap = (i + 1) * 50;
               const res = Math.min(cap, volume);
 
               return (
                 <m.div
+                  key={i}
                   style={{
                     width: res + 120,
                     height: res + 120,
@@ -162,7 +163,8 @@ const InterviewLive = ({ data }: { data: Interview }) => {
           ) : (
             <Button
               onClick={() => {
-                connected ? endcall() : startInterview();
+                if (connected) endcall();
+                else startInterview();
               }}
               size={"lg"}
               disabled={connecting}

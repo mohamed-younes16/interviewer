@@ -1,8 +1,10 @@
 import Hero from "@/components/Hero";
 import InterviewCard from "@/components/InterviewCard";
-import { auth, db } from "@/lib/firebase";
+import Loading from "@/components/Loading";
+import { auth } from "@/lib/firebase";
 import { adminDb } from "@/lib/firebaseAdmin";
 import { Interview } from "@/types";
+
 
 export default async function Home() {
   const user = auth.currentUser;
@@ -21,13 +23,21 @@ export default async function Home() {
 
   return (
     <div className="pt-6  px-16">
-      <Hero />
-      <div className="flex max-w-[1200px] mx-auto  mt-6 gap-6 flex-wrap">
-        {!!interviews?.length &&
-          interviews.map((e, i) => (
-            <InterviewCard data={e} key={i} delay={i} mode="template" />
-          ))}
-      </div>
+      {user ? (
+        <>
+          {" "}
+          <Hero />
+          <div className="flex max-w-[1200px] mx-auto  mt-6 gap-6 flex-wrap">
+            {user &&
+              !!interviews?.length &&
+              interviews.map((e, i) => (
+                <InterviewCard data={e} key={i} delay={i} mode="template" />
+              ))}
+          </div>
+        </>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

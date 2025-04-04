@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { motion as m } from "motion/react";
 import ResetPasswordForm from "@/components/forms/ResetPasswordForm";
@@ -9,9 +9,6 @@ import CliComp from "@/components/CliComp";
 import { toast } from "sonner";
 
 const AuthComp = () => {
-  const [authType, setAuthType] = useState<"login" | "register" | "reset">(
-    "login"
-  );
   useEffect(() => {
     toast.dismiss();
   }, []);
@@ -20,7 +17,6 @@ const AuthComp = () => {
     <CliComp>
       <m.div
         className="relative   max-w-lg mx-auto mt-6 p-6 rounded-xl bg-gradient-to-b from-[#1A1C20] to-[#08090D]"
-        key={authType}
         initial={{
           opacity: 0,
           rotateY: 10,

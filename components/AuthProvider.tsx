@@ -47,7 +47,7 @@ const AuthProvider = () => {
             toast.dismiss();
             toast.success("Registered successfully , now you can login!");
           })
-          .catch((error: any) => {
+          .catch(() => {
             toast.dismiss();
             toast.error("Error adding user account: ");
           });
@@ -58,7 +58,7 @@ const AuthProvider = () => {
     });
 
     return () => unsub();
-  }, [setUser, router, pathname]);
+  }, [setUser, router, pathname, setUserData]);
 
   if (loading) return null;
 

@@ -1,12 +1,11 @@
 "use client";
 
-import { auth } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AnimatePresence, motion as m } from "framer-motion";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useStore } from "@/lib/state";
 import { Button } from "@/components/ui/button";
 import { Interview } from "@/types";
@@ -32,17 +31,21 @@ const Page = () => {
 
         toast.success(res.data.message);
         setIsAdmin(true);
-      } catch (err: any) {
+      } catch (err: unknown) {
         router.push("/");
         setIsAdmin(false);
-        toast.error(err.response?.data?.message || "Unauthorized");
+        if (axios.isAxiosError(err)) {
+          toast.error(err.response?.data?.message || "Unauthorized");
+        } else {
+          toast.error("An unexpected error occurred");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     check();
-  }, [user]);
+  }, [user, router]);
   const pushdocs = async () => {
     if (!user) return;
 
@@ -52,12 +55,16 @@ const Page = () => {
         token,
         data: dummyInterviews,
       };
-      const res = await axios.post("/api/admin/upload", {
-        ...data
+      const res: AxiosResponse = await axios.post("/api/admin/upload", {
+        ...data,
       });
       toast.success(res.data.message);
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Unauthorized");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "Unauthorized");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }

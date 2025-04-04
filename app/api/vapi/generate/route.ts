@@ -1,4 +1,4 @@
-import { Interview, InterviewCreate } from "@/types";
+import { InterviewCreate } from "@/types";
 import { NextResponse } from "next/server";
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
                 Return them in an array [ "Question 1", "Question 2", "Question 3".....]`,
     });
 
-    let interviewData = {
+    const interviewData = {
       level,
       role,
       techstack,

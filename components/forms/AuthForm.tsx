@@ -45,13 +45,7 @@ const registerSchema = loginSchema
     path: ["confirmPassword"],
   });
 
-const AuthForm = ({
-  type,
-  setAuthType,
-}: {
-  type: "login" | "register";
-  setAuthType: (v: "login" | "register") => void;
-}) => {
+const AuthForm = ({ type }: { type: "login" | "register" }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof registerSchema | typeof loginSchema>>({
@@ -64,7 +58,7 @@ const AuthForm = ({
   });
 
   const {
-    formState: { isSubmitting, isValid },
+    formState: { isValid },
   } = form;
 
   const onSubmit = async (
@@ -90,7 +84,7 @@ const AuthForm = ({
             .then(() =>
               toast.success("Registered successfully , now you can login!")
             )
-            .catch((error: any) => {
+            .catch(() => {
               toast.error("Error adding user account: ");
             });
         }
@@ -99,8 +93,8 @@ const AuthForm = ({
         toast.success("Logged in successfully!");
         router.push("/");
       }
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred");
+    } catch {
+      toast.error("An error occurred");
     }
   };
 
@@ -166,7 +160,7 @@ const AuthForm = ({
             <FormField
               control={form.control}
               name="imageUrl"
-              render={({ field }) => (
+              render={({}) => (
                 <FormItem>
                   <FormLabel>Profile Image</FormLabel>
                   <div className="flex items-center gap-2">
@@ -221,6 +215,7 @@ const AuthForm = ({
                                     return (
                                       <Loader2 className="animate-spin size-8 z-50 " />
                                     );
+                                  return null;
                                 },
                               }}
                               endpoint="imageUploader"
@@ -250,7 +245,7 @@ const AuthForm = ({
             <FormField
               control={form.control}
               name="resume"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Resume (PDF)</FormLabel>
                   <div className="flex items-center gap-2">
@@ -271,11 +266,12 @@ const AuthForm = ({
                               content={{
                                 button({ ready, isUploading }) {
                                   if (ready && !isUploading)
-                                    return <div>Upload PDF</div>;
+                                    return <div>Upload image</div>;
                                   if (isUploading || !ready)
                                     return (
                                       <Loader2 className="animate-spin size-8 z-50 " />
                                     );
+                                  return null;
                                 },
                               }}
                               endpoint="pdfUploader"

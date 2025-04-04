@@ -23,11 +23,12 @@ const InterviewCard = ({
       data: Feedback;
       delay?: number;
     }) => {
-  const techstack: string[] = (
-    mode === "template" ? data.techstack : data.template.techstack
-  )
-    .slice(0, 2)
-    .map((e) => e.toLowerCase().replace(/[\s+-]/g, ""));
+  const techstack: string[] =
+    data && mode === "template"
+      ? data.techstack
+      : mode === "feedback" && data.template
+      ? data.template.techstack
+      : [];
 
   return (
     <div className="bg-grad px-4 min-h-[400px]  py-6 w-[320px] space-y-5 rounded-xl relative ">
@@ -74,23 +75,23 @@ const InterviewCard = ({
       <Separator className="mt-14" />
       <div className="flex justify-between items-center">
         <div className="flex ">
-          {techstack.slice(2).map((tech, i) => (
-            
-              <div
-                key={i}
-                style={{ marginLeft: i !== 0 ? "-10px" : 0 }}
-                className="rounded-full fc size-[40px] border-[#242633] bg-[#1A1C2A] border-[1px] "
-              >
-                <Image
-                  src={`/${techstack[i]}.png`}
-                  alt={tech}
-                  width={30}
-                  height={30}
-                  className="object-contain"
-                />
-              </div>
-            
-          ))}
+          {techstack.length > 0
+            ? techstack.slice(0, 2).map((tech, i) => (
+                <div
+                  key={i}
+                  style={{ marginLeft: i !== 0 ? "-10px" : 0 }}
+                  className="rounded-full fc size-[40px] border-[#242633] bg-[#1A1C2A] border-[1px] "
+                >
+                  <Image
+                    src={`/${techstack[i]}.png`}
+                    alt={tech}
+                    width={30}
+                    height={30}
+                    className="object-contain"
+                  />
+                </div>
+              ))
+            : null}
         </div>
         <Link
           href={

@@ -99,7 +99,7 @@ export function ProfileEditForm() {
     });
 
     return () => unsubscribe();
-  }, [form, router]);
+  }, [form, router, setUser]);
 
   async function onSubmit(data: ProfileFormValues) {
     if (!user) return;
@@ -163,7 +163,6 @@ export function ProfileEditForm() {
                   }}
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
-        
                     form.setValue("imageUrl", res[0].ufsUrl, {
                       shouldDirty: true,
                       shouldTouch: true,
@@ -200,7 +199,7 @@ export function ProfileEditForm() {
             <FormField
               control={form.control}
               name="resume"
-              render={({ field }) => (
+              render={({  }) => (
                 <FormItem>
                   <FormLabel>Resume</FormLabel>
                   <FormControl>
@@ -212,7 +211,6 @@ export function ProfileEditForm() {
                         }}
                         endpoint="pdfUploader"
                         onClientUploadComplete={(res) => {
-          
                           form.setValue("resume", res[0].ufsUrl, {
                             shouldDirty: true,
                             shouldTouch: true,

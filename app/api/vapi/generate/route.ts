@@ -53,12 +53,13 @@ export async function POST(req: Request) {
     });
     interviewData.description = description;
     console.log(interviewData);
-    // const tempaltesRef = adminDb.collection("templates");
-    // const interviewRef = await tempaltesRef.add(interviewData);
-    // const id = (await interviewRef.get()).id;
+    const tempaltesRef = adminDb.collection("templates");
+    const interviewRef = await tempaltesRef.add(interviewData);
+    const id = (await interviewRef.get()).id;
 
     return NextResponse.json({
       message: "created the interview template ",
+      id,
     });
   } catch (error) {
     console.log(error);

@@ -52,13 +52,13 @@ export async function POST(req: Request) {
         please keep it concise in range of 2-3 lines of text`,
     });
     interviewData.description = description;
-    const tempaltesRef = adminDb.collection("templates");
-    const interviewRef = await tempaltesRef.add(interviewData);
-    const id = (await interviewRef.get()).id;
+    console.log(interviewData);
+    // const tempaltesRef = adminDb.collection("templates");
+    // const interviewRef = await tempaltesRef.add(interviewData);
+    // const id = (await interviewRef.get()).id;
 
     return NextResponse.json({
       message: "created the interview template ",
-      id,
     });
   } catch (error) {
     console.log(error);

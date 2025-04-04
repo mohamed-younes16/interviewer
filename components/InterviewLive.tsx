@@ -33,7 +33,7 @@ const InterviewLive = ({
   const [isSpeaking, setIsspeaking] = useState(false);
   const [messages, setMessages] = useState<
     { transcript: string; role: "assistant" | "user" }[]
-  >([]);
+  >([{ transcript: "", role: "assistant" }]);
   const { userData } = useStore();
 
   useEffect(() => {

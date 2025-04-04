@@ -12,11 +12,26 @@ import { vapi } from "@/lib/vapi";
 import { interviewer } from "@/constants";
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { toast } from "sonner";
-const InterviewLive = ({ data }: { data: Interview }) => {
+
+const generateInterviewIdCall = "f301d47d-0f42-4703-b614-6d3562a4e4a0";
+
+const InterviewLive = ({
+  data,
+  type,
+}:
+  | {
+      data: Interview;
+      type: "interview";
+    }
+  | {
+      data: null;
+      type: "generate";
+    }) => {
   const [volume, setVolume] = useState<number>(20);
   const [connecting, setConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<boolean>(false);
   const [isSpeaking, setIsspeaking] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]);
   const { userData } = useStore();
 
   useEffect(() => {
@@ -47,49 +62,38 @@ const InterviewLive = ({ data }: { data: Interview }) => {
 
     vapi.on("message", (message) => {
       console.log("Vapi Message:", message);
-
-      try {
-        const jsonMessage = JSON.parse(message);
-
-        if (
-          jsonMessage?.totalScore !== undefined &&
-          jsonMessage?.categoryScores
-        ) {
-          console.log("Final Feedback JSON:", jsonMessage);
-          toast.success("Interview feedback received!");
-
-          // You can store the JSON in state or send it to Firestore.
-        }
-      } catch (error) {
-        console.log("Not a JSON message:", error);
-      }
+      setMessages((prev) => [...prev, message]);
     });
   }, []);
 
   const startInterview = async () => {
     setConnecting(true);
-    const template = {
-      ...interviewer,
-      model: {
-        ...interviewer.model,
-        messages: [
-          {
-            role: "system",
-            content: interviewer.model?.messages?.[0]?.content?.replace(
-              "{{questions}}",
-              JSON.stringify(data.questions)
-            ),
-          },
-        ],
-      },
-    } as CreateAssistantDTO;
+    if (type === "generate") {
+      await vapi.start(generateInterviewIdCall);
+    } else {
+      const template = {
+        ...interviewer,
+        model: {
+          ...interviewer.model,
+          messages: [
+            {
+              role: "system",
+              content: interviewer.model?.messages?.[0]?.content?.replace(
+                "{{questions}}",
+                JSON.stringify(data.questions)
+              ),
+            },
+          ],
+        },
+      } as CreateAssistantDTO;
 
-    vapi.start(template);
+      vapi.start(template);
+    }
   };
   const endcall = async () => {
     vapi.stop();
   };
-  if (!(userData && data))
+  if (!(userData && data) && type === "interview")
     return (
       <div className="fixed inset-0 z-50 fc">
         <Loader2 className="size-10 animate-spin" />
@@ -151,7 +155,7 @@ const InterviewLive = ({ data }: { data: Interview }) => {
             alt="your profile image"
           />
           <p className="fnt-semibold capitilize text-2xl">
-            {userData.username} (You)
+            {userData?.username} (You)
           </p>{" "}
         </div>
       </div>
@@ -170,7 +174,11 @@ const InterviewLive = ({ data }: { data: Interview }) => {
               disabled={connecting}
               className="bg-main py-6 rounded-full  px-8 font-bold text-2xl"
             >
-              {connected ? "end call" : "   Start Interview"}
+              {connected
+                ? "end call"
+                : type === "generate"
+                ? "generate interview call "
+                : "Start Interview"}
             </Button>
           )}
         </div>

@@ -9,8 +9,16 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { level, role, techstack, type, userId, amount }: InterviewCreate =
-      await req.json();
+    const body = await req.json();
+    console.log(body);
+    const {
+      level = "",
+      role = "",
+      techstack = "",
+      type,
+      userId = "",
+      amount = 5,
+    }: InterviewCreate = body;
     const { text } = await generateText({
       model: google("gemini-2.0-flash-001"),
       prompt: `prepare questions for  an interview where
@@ -28,7 +36,7 @@ export async function POST(req: Request) {
     const interviewData = {
       level,
       role,
-      techstack,
+      techstack: techstack.split(",").map((e) => e.trim()),
       type,
       userId,
       createdAt: new Date().toISOString(),

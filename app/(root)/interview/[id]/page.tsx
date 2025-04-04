@@ -33,7 +33,8 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div className="pt-6 space-y-10 px-16">
       <div className="flex justify-between">
-        <div className="fc gap-3">
+        {interview !== null ? <>
+         <div className="fc gap-3">
           <Image
             src={interview.imageUrl}
             width={40}
@@ -60,11 +61,13 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             ))}
           </div>
         </div>
+        </>:null}
+       
         <div className="fc text-xl rounded-lg px-4 py-3 bg-[#24273A]">
           {interview.type} Interview
         </div>
       </div>
-      <InterviewLive data={interview} />
+      <InterviewLive type="interview" data={interview} />
     </div>
   );
 };

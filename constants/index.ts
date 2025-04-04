@@ -263,7 +263,7 @@ export const dummyInterviews: Interview[] = [
     description:
       "A mid-level frontend developer interview focusing on React, performance, and styling.",
     type: "Technical",
-    finalized: true,
+
   },
   {
     id: "2",
@@ -283,7 +283,7 @@ export const dummyInterviews: Interview[] = [
     description:
       "A senior backend developer interview focusing on system design and architecture.",
     type: "Technical",
-    finalized: true,
+ 
   },
   {
     id: "3",
@@ -303,7 +303,7 @@ export const dummyInterviews: Interview[] = [
     description:
       "A mid-level product manager interview focusing on prioritization, decision-making, and collaboration.",
     type: "non-technical",
-    finalized: true,
+
   },
   {
     id: "4",
@@ -323,7 +323,7 @@ export const dummyInterviews: Interview[] = [
     description:
       "A senior data scientist interview covering ML concepts, data cleaning, and model optimization.",
     type: "Technical",
-    finalized: true,
+
   },
   {
     id: "5",
@@ -343,6 +343,6 @@ export const dummyInterviews: Interview[] = [
     description:
       "A mid-level UX designer interview focusing on process, accessibility, and design decisions.",
     type: "non-technical",
-    finalized: true,
+ 
   },
 ];

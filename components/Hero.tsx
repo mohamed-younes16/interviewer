@@ -4,6 +4,8 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion as m } from "motion/react";
+import Link from "next/link";
+
 const Hero = () => {
   return (
     <div className="bg-gradient-to-b mx-auto h-[350px] max-w-[1200px]  px-16 max-lg:px-6 fc from-[#171532] to-[#08090D] rounded-xl">
@@ -79,10 +81,12 @@ const Hero = () => {
           }}
         >
           {" "}
-          <Button className="rounded-full px-8 py-6 bg-main text-xl font-semibold">
-            {" "}
-            Start an interview
-          </Button>
+          <Link href="/interview">
+            <Button className="rounded-full px-8 py-6 bg-main text-xl font-semibold">
+              {" "}
+              Start an interview
+            </Button>
+          </Link>
         </m.div>
       </div>
 
